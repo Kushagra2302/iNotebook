@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Signup = () => {
+const Signup = (props) => {
 
   const [credentials, setCredentials] = useState({ name: "", email: "", password: "", cpassword: "" })
   const navigate = useNavigate(); // useHistory hook is replaced with useNavigate in v6 of react-router-dom
@@ -18,9 +18,15 @@ const Signup = () => {
     });
     const json = await response.json();
     console.log(json);
+    if(json.success){
       // Save the auth token and redirect
       localStorage.setItem('token', json.authtoken);
       navigate("/");
+      props.showAlert("Account Created Successfully", "success" )
+    }
+    else{
+      props.showAlert("Invalid Details", "danger" )
+    }
   }
 
   const onChange = (e) => {
